@@ -1,6 +1,7 @@
 package com.example.bds.modules.iam.service;
 
 import com.example.bds.modules.iam.entity.Team;
+import com.example.bds.modules.iam.entity.TeamStatus;
 import com.example.bds.modules.iam.repository.TeamRepository;
 import com.example.bds.modules.iam.dto.Team.TeamDTO;
 import com.example.bds.modules.iam.dto.Team.CreateTeamDTO;
@@ -27,6 +28,33 @@ public class TeamService {
                 .stream()
                 .map(teamMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    // Lấy team theo code
+    public TeamDTO getTeamByCode(String code) {
+        Team team = teamRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("Team not found with code: " + code));
+        return teamMapper.toDTO(team);
+    }
+
+    // Lấy team theo teamname
+    public TeamDTO getTeamByTeamname(String teamname) {
+        Team team = teamRepository.findByTeamname(teamname)
+                .orElseThrow(() -> new IllegalArgumentException("Team not found with teamname: " + teamname));
+        return teamMapper.toDTO(team);
+    }
+
+    // Lấy teams theo status
+    public List<TeamDTO> getTeamsByStatus(String status) {
+        try {
+            TeamStatus teamStatus = TeamStatus.valueOf(status.toUpperCase());
+            return teamRepository.findByStatus(teamStatus)
+                    .stream()
+                    .map(teamMapper::toDTO)
+                    .collect(Collectors.toList());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid status value: " + status);
+        }
     }
 
     // Tạo một team mới từ CreateTeamDTO

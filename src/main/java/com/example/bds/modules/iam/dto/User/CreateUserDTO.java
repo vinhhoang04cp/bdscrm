@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateUserDTO {
     private String username;
     private String email;
@@ -15,4 +17,5 @@ public class CreateUserDTO {
     private String password;
     private String teamname;
     private String avtarUrl;
+    private Long teamId;
 }

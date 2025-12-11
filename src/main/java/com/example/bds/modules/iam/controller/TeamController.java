@@ -21,10 +21,37 @@ public class TeamController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TeamDTO>> getAllTeams() { // Hàm sẽ trả về danh sách TeamDTO
-        List<TeamDTO> teams = teamService.getAllTeams(); // Gọi đến TeamService để lấy danh sách teams
-        return ResponseEntity.ok(teams); // Trả về danh sách teams với mã trạng thái 200 OK
+    public ResponseEntity<List<TeamDTO>> getAllTeams(@RequestParam(required = false) String status) {
+        List<TeamDTO> teams;
+        if (status != null && !status.isEmpty()) {
+            teams = teamService.getTeamsByStatus(status);
+        } else {
+            teams = teamService.getAllTeams();
+        }
+        return ResponseEntity.ok(teams);
     }
+
+    @GetMapping("/code/{code}")
+    public ResponseEntity<TeamDTO> getTeamByCode(@PathVariable String code) {
+        try {
+            TeamDTO teamDTO = teamService.getTeamByCode(code);
+            return ResponseEntity.ok(teamDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/teamname/{teamname}")
+    public ResponseEntity<TeamDTO> getTeamByTeamname(@PathVariable String teamname) {
+        try {
+            TeamDTO teamDTO = teamService.getTeamByTeamname(teamname);
+            return ResponseEntity.ok(teamDTO);
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity<TeamDTO> createTeam(@RequestBody CreateTeamDTO createTeamDTO) {
