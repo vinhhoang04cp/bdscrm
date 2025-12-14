@@ -26,6 +26,46 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        try {
+            UserDTO userDTO = userService.getUserById(id);
+            return ResponseEntity.ok(userDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/by-username/{username}")
+    public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
+        try {
+            UserDTO userDTO = userService.getUserByUsername(username);
+            return ResponseEntity.ok(userDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/by-email/{email}")
+    public ResponseEntity<UserDTO> getUserByEmail(@PathVariable String email) {
+        try {
+            UserDTO userDTO = userService.getUserByEmail(email);
+            return ResponseEntity.ok(userDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @GetMapping("/by-phone/{phone}")
+    public ResponseEntity<UserDTO> getUserByPhone(@PathVariable String phone) {
+        try {
+            UserDTO userDTO = userService.getUserByPhone(phone);
+            return ResponseEntity.ok(userDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody CreateUserDTO createUserDTO) {
         try {

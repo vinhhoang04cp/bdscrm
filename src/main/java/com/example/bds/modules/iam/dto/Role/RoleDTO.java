@@ -1,6 +1,5 @@
-package com.example.bds.modules.iam.dto.Team;
+package com.example.bds.modules.iam.dto.Role;
 
-import com.example.bds.modules.iam.dto.User.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,12 +8,12 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamDTO {
+public class RoleDTO {
     private Long id;
-    private String teamname;
-    private String code;
+    private String name;
     private String description;
-    private String status;
+    private Boolean isAdminRole;
+    private Boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

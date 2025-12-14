@@ -10,5 +10,4 @@ public class BdsApplication {
         SpringApplication.run(BdsApplication.class, args);
         System.out.println("BdsApplication started");
     }
-
 }

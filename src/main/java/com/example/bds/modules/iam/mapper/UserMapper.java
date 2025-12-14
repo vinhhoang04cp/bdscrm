@@ -67,9 +67,7 @@ public class UserMapper {
         return user;
     }
 
-    /**
-     * Cập nhật User entity từ UpdateUserDTO
-     */
+    // Cập nhật User entity từ UpdateUserDTO
     public void updateEntity(User user, UpdateUserDTO updateUserDTO) {
         if (user == null || updateUserDTO == null) {
             return;

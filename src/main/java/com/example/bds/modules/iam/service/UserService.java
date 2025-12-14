@@ -28,6 +28,30 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public UserDTO getUserById(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return userMapper.toDTO(user);
+    }
+
+    public UserDTO getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return userMapper.toDTO(user);
+    }
+
+    public UserDTO getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return userMapper.toDTO(user);
+    }
+
+    public UserDTO getUserByPhone(String phone) {
+        User user = userRepository.findByPhone(phone)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return userMapper.toDTO(user);
+    }
+    
     public UserDTO createUser(CreateUserDTO createUserDTO) {
         if(userRepository.existsByUsername(createUserDTO.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
