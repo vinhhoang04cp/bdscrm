@@ -36,6 +36,21 @@ public class RoleService {
         return roleMapper.toDTO(role);
     }
 
+    // Lấy vai trò theo tên
+    public RoleDTO getRoleByName(String name) {
+        Role role = roleRepository.findByName(name)
+                .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+        return roleMapper.toDTO(role);
+    }
+
+    // Lấy các vai trò theo trạng thái hoạt động
+    public List<RoleDTO> getRolesByIsActive(Boolean isActive) {
+        List<Role> roles = roleRepository.findByIsActive(isActive);
+        return roles.stream()
+                .map(roleMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     /*
     Tạo vai trò mới, trả về 1 RoleDTO, tham số đầu vào là CreateRoleDTO được truyền từ client
      */

@@ -8,6 +8,6 @@ public class BdsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BdsApplication.class, args);
-        System.out.println("BdsApplication started");
+        System.out.println("chay duoc roi ne hihi :))");
     }
 }

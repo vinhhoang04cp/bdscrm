@@ -4,6 +4,13 @@ import com.example.bds.modules.iam.dto.Team.CreateTeamDTO;
 import com.example.bds.modules.iam.dto.Team.TeamDTO;
 import com.example.bds.modules.iam.dto.Team.UpdateTeamDTO;
 import com.example.bds.modules.iam.service.TeamService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@RestController // Đánh dấu lớp này là một REST controller
-@RequestMapping("/api/teams") // Định nghĩa đường dẫn cơ sở cho tất cả các endpoint trong controller này
+@RestController
+@RequestMapping("/api/teams")
+@Tag(name = "Team Management", description = "APIs quản lý nhóm/team trong hệ thống IAM")
 public class TeamController {
     private final TeamService teamService;
 
