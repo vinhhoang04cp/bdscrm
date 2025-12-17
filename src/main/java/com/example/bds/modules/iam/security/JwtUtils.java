@@ -15,13 +15,13 @@ import java.util.function.Function;
 @Component
 public class JwtUtils {
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret}") // @Value để lấy giá trị secret từ application.properties
     private String secret;
 
-    @Value("${jwt.expiration}")
+    @Value("${jwt.expiration}") // @Value để lấy giá trị expiration từ application.properties
     private Long expiration;
 
-    // Tạo secret key từ string
+    // Lấy khóa ký từ secret
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }

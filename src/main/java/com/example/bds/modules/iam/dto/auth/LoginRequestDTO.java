@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Email;
 @NoArgsConstructor
 @Data
 public class LoginRequestDTO {
-    @NotBlank(message = "Mật khẩu không được để trống")
+    @NotBlank(message = "Mật khẩu không được để trống") // @NotBlank: Validation không được để trống
     private String password;
 
     @NotBlank(message = "Username hoặc email không được để trống")

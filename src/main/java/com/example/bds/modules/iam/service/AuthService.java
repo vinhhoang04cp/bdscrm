@@ -21,23 +21,24 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Service
-@RequiredArgsConstructor
+@Service // Đánh dấu lớp này là một service trong Spring
+@RequiredArgsConstructor // Tự động tạo constructor với các trường final
 public class AuthService {
 
-    private final UserRepository userRepository;
-    private final PasswordResetTokenRepository passwordResetTokenRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtils jwtUtils;
-    private final AuthenticationManager authenticationManager;
-    private final JavaMailSender mailSender;
+    private final UserRepository userRepository; // Repository để thao tác với bảng User
+    private final PasswordResetTokenRepository passwordResetTokenRepository; // Repository để thao tác với bảng PasswordResetToken
+    private final PasswordEncoder passwordEncoder; // Mã hóa mật khẩu
+    private final JwtUtils jwtUtils; // Utils để tạo và xác thực JWT token
+    private final AuthenticationManager authenticationManager; // Quản lý xác thực người dùng
+    private final JavaMailSender mailSender; // Dịch vụ gửi email
 
     /**
      * Đăng ký user mới
+     * *@Transactional là một annotation trong Spring Framework được sử dụng để quản lý giao dịch (transaction) trong các phương thức của lớp dịch vụ (service layer).
      */
     @Transactional
     public LoginResponseDTO register(RegisterRequestDTO registerDTO) {
-        // Kiểm tra username đã tồn tại
+        // check bàng cách gọi đến repository để kiểm tra username, email, phone đã tồn tại chưa
         if (userRepository.existsByUsername(registerDTO.getUsername())) {
             throw new IllegalArgumentException("Username đã tồn tại");
         }
@@ -54,18 +55,19 @@ public class AuthService {
 
         // Tạo user mới
         User user = new User();
-        user.setUsername(registerDTO.getUsername());
-        user.setEmail(registerDTO.getEmail());
+        user.setUsername(registerDTO.getUsername()); // set username bằng giá trị từ registerDTO
+        user.setEmail(registerDTO.getEmail()); // set email bằng giá trị từ registerDTO
+         // Mã hóa mật khẩu trước khi lưu
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setFullName(registerDTO.getFullName());
         user.setPhone(registerDTO.getPhone());
         user.setAddress(registerDTO.getAddress());
         user.setStatus(UserStatus.ACTIVE);
 
-        user = userRepository.save(user);
+        user = userRepository.save(user); // Lưu user vào database
 
         // Generate JWT token
-        String token = jwtUtils.generateToken(user.getUsername());
+        String token = jwtUtils.generateToken(user.getUsername()); //
 
         return new LoginResponseDTO(token, user.getId(), user.getUsername(), user.getEmail(), user.getFullName());
     }
@@ -73,9 +75,12 @@ public class AuthService {
     /**
      * Đăng nhập
      */
-    @Transactional(readOnly = true)
-    public LoginResponseDTO login(LoginRequestDTO loginDTO) {
-        // Authenticate user
+    @Transactional(readOnly = true) // @Transactional đánh dấu bắt đầu 1 giao dịch, readOnly = true chỉ định rằng giao dịch này chỉ để đọc dữ liệu, không thay đổi gì
+    public LoginResponseDTO login(LoginRequestDTO loginDTO) { // Dữ liệu trả về là 1 LoginResponseDTO
+        /*
+         * authenticationManger là hàm , gọi từ Spring Security để xác thực người dùng dựa trên thông tin đăng nhập (username/email và password) được cung cấp trong loginDTO.
+         * Nếu xác thực thành công, nó sẽ trả về một đối tượng Authentication chứa thông tin về người dùng đã được xác thực.
+         */
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDTO.getUsernameOrEmail(),
@@ -83,20 +88,22 @@ public class AuthService {
                 )
         );
 
+        // Thiết lập thông tin xác thực cho SecurityContext
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Lấy thông tin user
+        // Lấy thông tin user bằng cách gọi đến findByUsernameOrEmail từ userRepository
         User user = userRepository.findByUsernameOrEmail(loginDTO.getUsernameOrEmail(), loginDTO.getUsernameOrEmail())
                 .orElseThrow(() -> new IllegalArgumentException("User không tồn tại"));
 
-        // Kiểm tra trạng thái user
+        // getStatus gọi từ User để kiểm tra trạng thái tài khoản, nếu không phải ACTIVE thì trả về lỗi
         if (user.getStatus() != UserStatus.ACTIVE) {
             throw new IllegalStateException("Tài khoản đã bị khóa hoặc không hoạt động");
         }
 
-        // Generate JWT token
+        // Sinh ra JWT token bằng cách gọi đến generateToken từ jwtUtils
         String token = jwtUtils.generateToken(user.getUsername());
 
+        // Trả về LoginResponseDTO chứa token và thông tin user
         return new LoginResponseDTO(token, user.getId(), user.getUsername(), user.getEmail(), user.getFullName());
     }
 
