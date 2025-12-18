@@ -1,5 +1,6 @@
 package com.example.bds.modules.iam.service;
 import com.example.bds.modules.iam.entity.Permission;
+import com.example.bds.modules.iam.entity.PermissionModule;
 import com.example.bds.modules.iam.repository.PermissionRepository;
 import com.example.bds.modules.iam.dto.Permission.PermissionDTO;
 import com.example.bds.modules.iam.dto.Permission.CreatePermissionDTO;
@@ -91,7 +92,7 @@ public class PermissionService {
             existingPermission.setDescription(updatePermissionDTO.getDescription());
         }
         if(updatePermissionDTO.getModule() != null) {
-            existingPermission.setModule(updatePermissionDTO.getModule());
+            existingPermission.setModule(PermissionModule.valueOf(updatePermissionDTO.getModule()));
         }
         if(updatePermissionDTO.getIsActive() != null) {
             existingPermission.setActive(updatePermissionDTO.getIsActive());

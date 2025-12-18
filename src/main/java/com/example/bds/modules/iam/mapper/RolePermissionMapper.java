@@ -22,7 +22,7 @@ public class RolePermissionMapper {
         dto.setRoleName(rolePermission.getRole().getName());
         dto.setPermissionId(rolePermission.getPermission().getId());
         dto.setPermissionName(rolePermission.getPermission().getName());
-        dto.setPermissionModule(rolePermission.getPermission().getModule());
+        dto.setPermissionModule(getClass().getSimpleName());
         dto.setGrantedAt(rolePermission.getGrantedAt());
         dto.setGrantedBy(rolePermission.getGrantedBy());
         return dto;

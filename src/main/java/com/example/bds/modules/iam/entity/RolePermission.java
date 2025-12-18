@@ -21,6 +21,10 @@ public class RolePermission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "scope", nullable = false, length = 20)
+    private RolePermissionScope scope = RolePermissionScope.OWN;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
     @JsonIgnoreProperties({"users", "permissions"})

@@ -20,7 +20,7 @@ public class CreatePermissionDTO {
 
     @NotBlank(message = "Module is required")
     @Size(max = 50, message = "Module must be less than 50 characters")
-    private String module; // VD: "USER", "PRODUCT", "ORDER"
+    private String module;
 
     private Boolean isActive = true;
 }

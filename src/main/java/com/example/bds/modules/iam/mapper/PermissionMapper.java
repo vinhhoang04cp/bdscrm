@@ -4,6 +4,7 @@ import com.example.bds.modules.iam.dto.Permission.PermissionDTO;
 import com.example.bds.modules.iam.dto.Permission.CreatePermissionDTO;
 import com.example.bds.modules.iam.dto.Permission.UpdatePermissionDTO;
 import com.example.bds.modules.iam.entity.Permission;
+import com.example.bds.modules.iam.entity.PermissionModule;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ public class PermissionMapper {
         dto.setId(permission.getId());
         dto.setName(permission.getName());
         dto.setDescription(permission.getDescription());
-        dto.setModule(permission.getModule());
+        dto.setModule(permission.getModule().name());
         dto.setIsActive(permission.isActive());
         dto.setCreatedAt(permission.getCreatedAt());
         dto.setUpdatedAt(permission.getUpdatedAt());
@@ -36,7 +37,7 @@ public class PermissionMapper {
         Permission permission = new Permission();
         permission.setName(createPermissionDTO.getName());
         permission.setDescription(createPermissionDTO.getDescription());
-        permission.setModule(createPermissionDTO.getModule());
+        permission.setModule(PermissionModule.valueOf(createPermissionDTO.getModule()));
         permission.setActive(createPermissionDTO.getIsActive() != null ? createPermissionDTO.getIsActive() : true);
         permission.setCreatedAt(LocalDateTime.now());
         return permission;
@@ -52,7 +53,7 @@ public class PermissionMapper {
         permission.setId(updatePermissionDTO.getId());
         permission.setName(updatePermissionDTO.getName());
         permission.setDescription(updatePermissionDTO.getDescription());
-        permission.setModule(updatePermissionDTO.getModule());
+        permission.setModule(PermissionModule.valueOf(updatePermissionDTO.getModule()));
         permission.setUpdatedAt(LocalDateTime.now());
         return permission;
     }
@@ -64,7 +65,7 @@ public class PermissionMapper {
         }
         permission.setName(updatePermissionDTO.getName());
         permission.setDescription(updatePermissionDTO.getDescription());
-        permission.setModule(updatePermissionDTO.getModule());
+        permission.setModule(PermissionModule.valueOf(updatePermissionDTO.getModule()));
         permission.setUpdatedAt(LocalDateTime.now());
     }
 }

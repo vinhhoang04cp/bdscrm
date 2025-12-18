@@ -27,8 +27,13 @@ public class Permission {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false, length = 50)
-    private String module; // VD: "USER", "PRODUCT", "ORDER"
+    @Enumerated(EnumType.STRING)
+    @Column(name = "action", nullable = false, length = 20)
+    private PermissionAction action = PermissionAction.VIEW;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "module", nullable = false, length = 50)
+    private PermissionModule module;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
